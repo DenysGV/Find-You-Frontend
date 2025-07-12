@@ -29,6 +29,8 @@ import UserUpdateListener from "./components/Admin/UserUpdateListener";
 import NotFound from "./pages/NotFound";
 import AdminSiteSwitchPage from "./pages/AdminSiteSwitchPage";
 import SiteStatusRouter from "./components/UX/SiteStatusRouter";
+import Success from "./pages/Success";
+import Failed from "./pages/Failed";
 
 
 const App = () => {
@@ -201,6 +203,22 @@ const App = () => {
                element={
                   <SiteStatusRouter>
                      <Messages />
+                  </SiteStatusRouter>
+               }
+            />
+            <Route
+               path="/success"
+               element={
+                  <SiteStatusRouter>
+                     <Success />
+                  </SiteStatusRouter>
+               }
+            />
+            <Route
+               path="/failed"
+               element={
+                  <SiteStatusRouter>
+                     <Failed />
                   </SiteStatusRouter>
                }
             />
