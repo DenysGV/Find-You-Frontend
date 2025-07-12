@@ -3,7 +3,7 @@ import { IModalRecovery } from "../../../types/IModal";
 import axios from "axios";
 
 const RecoveryModal = ({ isOpen, setIsOpen, children, login, password, randomNum, error, setError, sendCode, timer, setTimer }: IModalRecovery) => {
-   const apiUrlChange: string = 'http://167.86.84.197:5000/recovery-password'
+   const apiUrlChange: string = 'https://check-you.blog/api/recovery-password'
    const openModal = () => setIsOpen(true);
    const closeModal = () => setIsOpen(false);
    const [code, setCode] = useState<number>(0)

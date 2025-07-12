@@ -17,7 +17,7 @@ const DeleteMain = () => {
    const navigate = useNavigate()
    const [isOpenLogin, setIsOpenLogin] = useState<boolean>(false);
 
-   const apiUrl = `http://167.86.84.197:5000/sections?page_name=Удаление`
+   const apiUrl = `https://check-you.blog/api/sections?page_name=Удаление`
    const [error, setError] = useState<boolean>(false)
 
    const [sections, setSections] = useState<IAdminSections | null>(null)

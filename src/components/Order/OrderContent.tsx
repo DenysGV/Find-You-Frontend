@@ -18,8 +18,8 @@ const OrderContent = () => {
       loading: false,
       error: false,
    })
-   const apiUrlAdd: string = 'http://167.86.84.197:5000/add-order'
-   const apiUrlGet: string = `http://167.86.84.197:5000/get-orders?user_id=${user?.id}&type=add`
+   const apiUrlAdd: string = 'https://check-you.blog/api/add-order'
+   const apiUrlGet: string = `https://check-you.blog/api/get-orders?user_id=${user?.id}&type=add`
 
    const [code, setCode] = useState<string>("");
    const [captcha, setCaptcha] = useState<ICaptcha>({
@@ -28,7 +28,7 @@ const OrderContent = () => {
    });
 
    const fetchCaptcha = async () => {
-      const response = await axios.get("http://167.86.84.197:5000/captcha");
+      const response = await axios.get("https://check-you.blog/api/captcha");
       setCaptcha(response.data);
    };
 

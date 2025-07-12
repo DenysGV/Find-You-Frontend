@@ -8,7 +8,7 @@ import Title from "../UX/Title";
 const FavoritesContent = () => {
    const storedUser = localStorage.getItem('user');
    const user: IUser | null = storedUser ? JSON.parse(storedUser) : null;
-   const apiUrlCheck = `http://167.86.84.197:5000/favorites?users_id=${user?.id}`
+   const apiUrlCheck = `https://check-you.blog/api/favorites?users_id=${user?.id}`
    const [result, serResult] = useState<IFavoritesState>({
       items: null,
       loading: false,

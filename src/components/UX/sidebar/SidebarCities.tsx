@@ -9,7 +9,7 @@ import api from "../../../services/axiosInstance";
 import { useNavigate } from "react-router-dom";
 
 const SidebarCities = ({ setUserCheck }: ISidebarCities) => {
-   let apiUrl = `http://167.86.84.197:5000/cities`;
+   let apiUrl = `https://check-you.blog/api/cities`;
    const navigate = useNavigate()
    const [result, setResult] = useState<ICityProp>({
       items: null,

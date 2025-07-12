@@ -22,7 +22,7 @@ const AdminUsersContent = () => {
    const [errorMessage, setErrorMessage] = useState<string>('')
    const [successMessage, setSuccessMessage] = useState<string>('')
 
-   const apiUrlDelete = 'http://167.86.84.197:5000/users-delete'
+   const apiUrlDelete = 'https://check-you.blog/api/users-delete'
    const storedUser = localStorage.getItem('user');
    const user: IUser | null = storedUser ? JSON.parse(storedUser) : null;
 

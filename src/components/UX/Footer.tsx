@@ -12,7 +12,7 @@ const Footer = () => {
    const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
    const [startDate, endDate] = dateRange;
    const [highlightedDates, setHighlightedDates] = useState<Date[]>([]);
-   const apiUrl = `http://167.86.84.197:5000/sections?page_name=Футер`;
+   const apiUrl = `https://check-you.blog/api/sections?page_name=Футер`;
    const [error, setError] = useState<boolean>(false);
    const [sections, setSections] = useState<IAdminSections | null>(null);
 
@@ -28,7 +28,7 @@ const Footer = () => {
       setAllDatesError(false);
 
       try {
-         const response = await axios.get('http://167.86.84.197:5000/get-all-account-dates');
+         const response = await axios.get('https://check-you.blog/api/get-all-account-dates');
 
          if (response.data && response.data.dates) {
             // Преобразуем строки дат в объекты Date для подсветки
@@ -160,7 +160,8 @@ const Footer = () => {
             <div className='footer__row'>
                <div className="footer__main">
                   <Link to="/">
-                     <img src='/images/logoFooter.png' className='logo' alt="Логотип" />
+                     <h4>Check You Tea</h4>
+                     {/*<img src='/images/logoFooter.png' className='logo' alt="Логотип" />*/}
                   </Link>
                   <ul className="footer-links">
                      <li>
@@ -175,13 +176,13 @@ const Footer = () => {
                         <Link to="/tags">Облако тегов</Link>
                      </li>
                      <li>·</li>
-                     <li>
+                     {/*<li>
                         <Link to="/referral">Реферальная система</Link>
                      </li>
                      <li>·</li>
                      <li>
                         <Link to="/refusual">Отказ от ответственности</Link>
-                     </li>
+                     </li>*/}
                   </ul>
                   <p className="footer-text">{sections && sections.sections[0].content}</p>
                   <p className="footer-text">{error && "Произошла ошибка при получении описания"}</p>

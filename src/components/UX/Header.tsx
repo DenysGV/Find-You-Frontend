@@ -11,7 +11,7 @@ const Header = ({ activeLink }: { activeLink?: string }) => {
             <div className="navbar-inner">
                <div className="layout-container ">
                   <span className="brand pt25">
-                     <Link to="/"><img src='/images/logoHeader.png' className='logo' /></Link>
+                     <Link to="/"><h1>Check You Tea</h1>{/*<img src='/images/logoHeader.png' className='logo' />*/}</Link>
                   </span>
                   <ul className="nav pt pull-right">
                      <li className={activeLink === 'Home' ? 'active' : ''}>
@@ -26,7 +26,7 @@ const Header = ({ activeLink }: { activeLink?: string }) => {
                      <li className={activeLink === 'Orders' ? 'active' : ''}>
                         <Link to="/Order">Заказы</Link>
                      </li>
-                     <li className={activeLink === 'Delete' ? 'active' : ''}>
+                     {/*<li className={activeLink === 'Delete' ? 'active' : ''}>
                         <Link to="/Delete">Удаление</Link>
                      </li>
                      <li className={activeLink === 'Access' ? 'active' : ''}>
@@ -34,7 +34,7 @@ const Header = ({ activeLink }: { activeLink?: string }) => {
                      </li>
                      <li className={activeLink === 'Mirrors' ? 'active' : ''}>
                         <Link to="/Mirrors">Зеркала</Link>
-                     </li>
+                     </li>*/}
                      <li className={activeLink === 'About' ? 'active' : ''}>
                         <Link to="/About">О проекте</Link>
                      </li>
@@ -46,7 +46,7 @@ const Header = ({ activeLink }: { activeLink?: string }) => {
          <div className="jumbotron-mob hidden-desktop">
             <div className="layout-container">
                <span>
-                  <Link to="/"><img src='/images/logoHeader.png' className='logo' /></Link>
+                  <Link to="/">Check You Tea{/*<img src='/images/logoHeader.png' className='logo' />*/}</Link>
                </span>
                <div className="nav header-mobile__menu">
                   <li className={activeLink === 'Home' ? 'active' : ''}>
@@ -61,7 +61,7 @@ const Header = ({ activeLink }: { activeLink?: string }) => {
                   <li className={activeLink === 'Order' ? 'active' : ''}>
                      <Link to="/Order">Заказы</Link>
                   </li>
-                  <li className={activeLink === 'Delete' ? 'active' : ''}>
+                  {/*<li className={activeLink === 'Delete' ? 'active' : ''}>
                      <Link to="/Delete">Удаление</Link>
                   </li>
                   <li className={activeLink === 'Access' ? 'active' : ''}>
@@ -69,7 +69,7 @@ const Header = ({ activeLink }: { activeLink?: string }) => {
                   </li>
                   <li className={activeLink === 'Mirrors' ? 'active' : ''}>
                      <Link to="/Mirrors">Зеркала</Link>
-                  </li>
+                  </li>*/}
                   <li className={activeLink === 'About' ? 'active' : ''}>
                      <Link to="/About">О проекте</Link>
                   </li>

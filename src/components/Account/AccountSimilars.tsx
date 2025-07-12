@@ -10,7 +10,7 @@ const AccountSimilars = ({ account, tags }: IAccountAll) => {
       loading: false,
       error: false
    })
-   const apiUrl = `http://167.86.84.197:5000/accounts?page=1&tag_id=${tags[0].id}`
+   const apiUrl = `https://check-you.blog/api/accounts?page=1&tag_id=${tags[0].id}`
 
    const getData = async () => {
       try {

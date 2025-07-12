@@ -35,7 +35,7 @@ export const transformPhotoAvatar = (avatar: IUser['avatar']) => {
          try {
             const user = JSON.parse(storedUser);
             // Создаем URL для запроса аватара с сервера
-            return `http://167.86.84.197:5000/user-avatar/${user.id}?${Date.now()}`; // Добавляем timestamp для предотвращения кэширования
+            return `https://check-you.blog/api/user-avatar/${user.id}?${Date.now()}`; // Добавляем timestamp для предотвращения кэширования
          } catch (e) {
             console.error("Ошибка при получении ID пользователя:", e);
          }

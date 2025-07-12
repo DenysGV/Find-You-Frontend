@@ -37,7 +37,7 @@ const SiteStatusRouter = ({ children }: SiteStatusRouterProps) => {
       const fetchSiteStatus = async () => {
          try {
             // Попытка получить статус с сервера
-            const response = await axios.get("http://167.86.84.197:5000/site-status");
+            const response = await axios.get("https://check-you.blog/api/site-status");
             const status = response.data.enabled;
 
             // Сохраняем статус в localStorage для быстрого доступа

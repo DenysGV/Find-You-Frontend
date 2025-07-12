@@ -15,7 +15,7 @@ const RecoveryContent = () => {
    const [message, setMessage] = useState<string>("");
    const [isOpen, setIsOpen] = useState<boolean>(false)
    const [randomNum, setRandomNum] = useState<number>(0)
-   const apiUrlSend: string = 'http://167.86.84.197:5000/send-code'
+   const apiUrlSend: string = 'https://check-you.blog/api/send-code'
    const [error, setError] = useState<string>('')
    const [timer, setTimer] = useState<number>(0)
 
@@ -48,7 +48,7 @@ const RecoveryContent = () => {
    };
 
    const fetchCaptcha = async () => {
-      const response = await axios.get("http://167.86.84.197:5000/captcha");
+      const response = await axios.get("https://check-you.blog/api/captcha");
       setCaptcha(response.data);
    };
 

@@ -7,7 +7,7 @@ import CommentsContentItem from "./CommentsContentItem";
 const CommentsContent = () => {
    const storedUser = localStorage.getItem('user');
    const user: IUser | null = storedUser ? JSON.parse(storedUser) : null;
-   const apiUrlCheck = `http://167.86.84.197:5000/comments?user_id=${user?.id}`
+   const apiUrlCheck = `https://check-you.blog/api/comments?user_id=${user?.id}`
    const [result, setResult] = useState<ICommentsState>({
       items: null,
       loading: false,
