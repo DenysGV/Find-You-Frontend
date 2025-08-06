@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-   baseURL: 'http://localhost:5000',
+   baseURL: 'https://check-you.blog/api',
    headers: { 'Content-Type': 'application/json' }
 });
 
@@ -19,7 +19,7 @@ api.interceptors.response.use(
             const refreshToken = localStorage.getItem('refreshToken');
             if (!refreshToken) throw new Error("Нет refresh-токена");
 
-            const res = await axios.post('http://localhost:5000/refresh', { refreshToken });
+            const res = await axios.post('https://check-you.blog/api/refresh', { refreshToken });
 
             const newToken = res.data.token;
             localStorage.setItem('token', newToken);

@@ -61,7 +61,7 @@ const Sidebar = () => {
 
    const getIsFav = async (userId: number) => {
       try {
-         const apiUrlCheck = `http://localhost:5000/favorites?users_id=${userId}`;
+         const apiUrlCheck = `https://check-you.blog/api/favorites?users_id=${userId}`;
          const result = await axios.get(apiUrlCheck);
          setFavQnt(result.data.length);
       } catch (error) {
@@ -72,7 +72,7 @@ const Sidebar = () => {
 
    const getMessages = async (userId: number) => {
       try {
-         const apiUrlGetMessages = `http://localhost:5000/unread-count?user_id=${userId}`;
+         const apiUrlGetMessages = `https://check-you.blog/api/unread-count?user_id=${userId}`;
          const result = await axios.get(apiUrlGetMessages);
          setMessagesQnt(result.data.unread_count);
       } catch (error) {

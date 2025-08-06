@@ -37,7 +37,7 @@ const ReadMessageModal = ({
 
    const markAsRead = async () => {
       try {
-         await axios.post('http://localhost:5000/mark-as-read', {
+         await axios.post('https://check-you.blog/api/mark-as-read', {
             message_id: id,
             user_id: user?.id
          });

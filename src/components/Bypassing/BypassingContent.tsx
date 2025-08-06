@@ -5,7 +5,7 @@ import Layout from "../UX/Layout"
 import distributeImagesByLayout from "../../utils/sectionSetting"
 
 const BypassingContent = () => {
-   const apiUrl = `http://localhost:5000/sections?page_name=Обход блокировок`
+   const apiUrl = `https://check-you.blog/api/sections?page_name=Обход блокировок`
    const [error, setError] = useState<boolean>(false)
 
    const [sections, setSections] = useState<IAdminSections | null>(null)

@@ -71,7 +71,7 @@ const SendMessageModal = ({
       }
 
       try {
-         await axios.post('http://localhost:5000/send-messages', {
+         await axios.post('https://check-you.blog/api/send-messages', {
             text_messages: message,
             user_from_id: user.id,
             user_to_login: login.trim()

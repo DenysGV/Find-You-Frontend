@@ -8,7 +8,7 @@ import SuccessModal from "../../UX/modals/SuccessModal"
 import ErrorModal from "../../UX/modals/ErrorModal"
 
 const AdminReportsContent = () => {
-   const apiUrl = `http://localhost:5000/reports`
+   const apiUrl = `https://check-you.blog/api/reports`
    const [filter, setFilter] = useState<string>('new')
    const [result, setResult] = useState<IAdminReportsState>({
       items: null,

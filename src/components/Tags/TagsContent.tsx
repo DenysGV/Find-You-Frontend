@@ -4,7 +4,7 @@ import ITagsProps, { ITag } from "../../types/ITagsProps";
 import { useNavigate } from "react-router-dom";
 
 const TagsContent = () => {
-   const apiUrl: string = 'http://localhost:5000/tags'
+   const apiUrl: string = 'https://check-you.blog/api/tags'
    const navigate = useNavigate()
    const [result, setResult] = useState<ITagsProps>({
       items: null,

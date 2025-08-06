@@ -12,7 +12,7 @@ const Footer = () => {
    const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
    const [startDate, endDate] = dateRange;
    const [highlightedDates, setHighlightedDates] = useState<Date[]>([]);
-   const apiUrl = `http://localhost:5000/sections?page_name=Футер`;
+   const apiUrl = `https://check-you.blog/api/sections?page_name=Футер`;
    const [error, setError] = useState<boolean>(false);
    const [sections, setSections] = useState<IAdminSections | null>(null);
 
@@ -28,7 +28,7 @@ const Footer = () => {
       setAllDatesError(false);
 
       try {
-         const response = await axios.get('http://localhost:5000/get-all-account-dates');
+         const response = await axios.get('https://check-you.blog/api/get-all-account-dates');
 
          if (response.data && response.data.dates) {
             // Преобразуем строки дат в объекты Date для подсветки

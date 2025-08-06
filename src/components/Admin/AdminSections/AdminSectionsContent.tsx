@@ -46,7 +46,7 @@ const AdminSectionsContent = () => {
    const fetchPageContent = async () => {
       setIsLoading(true);
       try {
-         const response = await axios.get(`http://localhost:5000/sections?page_name=${page}`);
+         const response = await axios.get(`https://check-you.blog/api/sections?page_name=${page}`);
          const { sections: dbSections, images: pageImages } = response.data;
 
          const sectionsWithAssignedImages = distributeImagesByLayout(pageImages, dbSections);
@@ -141,7 +141,7 @@ const AdminSectionsContent = () => {
             });
          });
 
-         await axios.post("http://localhost:5000/save-sections", formData, {
+         await axios.post("https://check-you.blog/api/save-sections", formData, {
             headers: {
                "Content-Type": "multipart/form-data",
             },

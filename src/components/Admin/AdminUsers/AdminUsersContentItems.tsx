@@ -17,7 +17,7 @@ const AdminUsersContentItems = ({ users, setUsers, setUsersSelected }: IAdminUse
    const search = searchParams.get("login") || '';
 
    const getUsersHandler = async () => {
-      let apiUrlAccouts = `http://localhost:5000/users?page=${page}`;
+      let apiUrlAccouts = `https://check-you.blog/api/users?page=${page}`;
       if (search) {
          apiUrlAccouts += `&login=${search}`
       }
