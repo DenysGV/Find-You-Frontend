@@ -22,7 +22,7 @@ export const startSessionChecker = () => {
       }
 
       try {
-         const response = await axios.get('https://check-you.blog/api/check-user-session', {
+         const response = await axios.get('http://localhost:5000/check-user-session', {
             headers: {
                Authorization: `Bearer ${token}`
             }
@@ -81,7 +81,7 @@ export const refreshUserData = async (): Promise<boolean> => {
    if (!token) return false;
 
    try {
-      const response = await axios.get('https://check-you.blog/api/check-user-session', {
+      const response = await axios.get('http://localhost:5000/check-user-session', {
          headers: {
             Authorization: `Bearer ${token}`
          }

@@ -61,7 +61,7 @@ const Sidebar = () => {
 
    const getIsFav = async (userId: number) => {
       try {
-         const apiUrlCheck = `https://check-you.blog/api/favorites?users_id=${userId}`;
+         const apiUrlCheck = `http://localhost:5000/favorites?users_id=${userId}`;
          const result = await axios.get(apiUrlCheck);
          setFavQnt(result.data.length);
       } catch (error) {
@@ -72,7 +72,7 @@ const Sidebar = () => {
 
    const getMessages = async (userId: number) => {
       try {
-         const apiUrlGetMessages = `https://check-you.blog/api/unread-count?user_id=${userId}`;
+         const apiUrlGetMessages = `http://localhost:5000/unread-count?user_id=${userId}`;
          const result = await axios.get(apiUrlGetMessages);
          setMessagesQnt(result.data.unread_count);
       } catch (error) {
@@ -136,8 +136,8 @@ const Sidebar = () => {
          <SidebarSearch />
 
          <br />
-	<br />
-	{/*
+         <br />
+         {/*
          <Title classes="pt">Обход блокировок</Title>
          <p>Самая актуальная: <br /> информация по <span style={{ color: "#f47a6d", cursor: 'pointer' }} onClick={() => { navigate('/bypassing') }}>ссылке</span></p>
 	*/}

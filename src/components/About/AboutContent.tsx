@@ -5,7 +5,7 @@ import Layout from "../UX/Layout"
 import distributeImagesByLayout from "../../utils/sectionSetting"
 
 const AboutContent = () => {
-   const apiUrl = `https://check-you.blog/api/sections?page_name=Про нас`
+   const apiUrl = `http://localhost:5000/sections?page_name=Про нас`
    const [error, setError] = useState<boolean>(false)
 
    const [sections, setSections] = useState<IAdminSections | null>(null)

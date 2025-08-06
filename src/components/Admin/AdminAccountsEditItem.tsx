@@ -7,6 +7,15 @@ import axios from "axios"
 import AdminAccountsEditSocial from "./AdminAccountsEditSocial"
 import { IAdminAccountAll } from "../../types/Admin"
 
+// Импортируем ReactCrop и тип Crop
+import ReactCrop, {
+   centerCrop,
+   // make Crop - удален, так как не является экспортируемым членом
+   PixelCrop,
+   Crop // Импортируем тип Crop
+} from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css'; // Не забудьте импортировать стили
+
 const AdminAccountsEditItem = ({
    account,
    setAccountsSelected,
@@ -46,15 +55,21 @@ const AdminAccountsEditItem = ({
    const [accountPhoto, setAccountPhoto] = useState<File | null>(null)
    const [photoPreview, setPhotoPreview] = useState<string | null>(null)
 
-   // Ref для input файла
+   // Ref для input файла (для сброса значения)
    const fileInputRef = useRef<HTMLInputElement>(null)
 
-   // Обновление предпросмотра при изменении accountPhoto
+   // --- Состояния и рефы для обрезки изображения ---
+   const [crop, setCrop] = useState<Crop>(); // Текущая область обрезки
+   const [completedCrop, setCompletedCrop] = useState<PixelCrop>(); // Завершенная область обрезки (пиксели)
+   const [imgSrc, setImgSrc] = useState<string | null>(null); // Источник изображения для обрезки (Data URL)
+   const [showCropper, setShowCropper] = useState<boolean>(false); // Управление видимостью компонента обрезки
+   const imgRef = useRef<HTMLImageElement>(null); // Реф для изображения внутри компонента ReactCrop
+
+   // Обновление предпросмотра при изменении accountPhoto (теперь это обрезанный файл)
    useEffect(() => {
       if (accountPhoto) {
          const objectUrl = URL.createObjectURL(accountPhoto)
          setPhotoPreview(objectUrl)
-
          // Очистка URL объекта при размонтировании
          return () => URL.revokeObjectURL(objectUrl)
       }
@@ -77,6 +92,13 @@ const AdminAccountsEditItem = ({
       // Если снимаем выделение, закрываем редактирование
       if (!checked) {
          setIsEditing(false);
+         setShowCropper(false); // Скрываем обрезку, если снимаем выделение
+         setImgSrc(null); // Очищаем изображение для обрезки
+         setAccountPhoto(null); // Очищаем обрезанное фото
+         setPhotoPreview(null); // Очищаем предпросмотр
+         if (fileInputRef.current) {
+            fileInputRef.current.value = ""; // Сбрасываем input файл
+         }
       }
    };
 
@@ -104,26 +126,114 @@ const AdminAccountsEditItem = ({
          }
       } else {
          setIsEditing(false);
+         setShowCropper(false); // Скрываем обрезку при закрытии редактирования
+         setImgSrc(null);
+         setAccountPhoto(null);
+         setPhotoPreview(null);
+         if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+         }
       }
    }
 
-   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+   // --- ОБРАБОТЧИКИ ДЛЯ ОБРЕЗКИ ИЗОБРАЖЕНИЯ ---
+   const handlePhotoFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const selectedFiles = event.target.files;
       if (!selectedFiles || !selectedFiles.length) {
-         setError("Можно загружать только JPG или MP4 файлы.");
+         setError("Выберите файл.");
          return;
       }
 
-      const allowedTypes = ["image/jpeg", "image/jpg", "video/mp4"];
       const file = selectedFiles[0];
+      // Разрешенные типы для обложки аккаунта (только изображения)
+      const allowedImageTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"];
 
-      if (!allowedTypes.includes(file.type)) {
-         setError("Можно загружать только JPG или MP4 файлы.");
+      if (!allowedImageTypes.includes(file.type)) {
+         setError("Для обложки аккаунта можно загружать только изображения (JPG, PNG, GIF, WEBP).");
          return;
       }
 
-      setAccountPhoto(file);
-      // Предпросмотр устанавливается через useEffect
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+         setImgSrc(reader.result as string); // Устанавливаем Data URL для ReactCrop
+         setShowCropper(true); // Показываем компонент обрезки
+         setAccountPhoto(null); // Очищаем предыдущее фото
+         setPhotoPreview(null); // Очищаем предыдущий предпросмотр
+         setCrop(undefined); // Сбрасываем crop, чтобы ReactCrop инициализировал его
+         setCompletedCrop(undefined); // Сбрасываем completedCrop
+      });
+      reader.readAsDataURL(file);
+   };
+
+   const onImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+      const { naturalWidth: width, naturalHeight: height } = e.currentTarget;
+      // Центрируем начальную область обрезки (квадрат, 80% от меньшей стороны)
+      const initialSize = Math.min(width, height) * 0.8;
+      setCrop(centerCrop(
+         { // Создаем объект Crop напрямую
+            unit: 'px',
+            width: initialSize,
+            height: initialSize,
+         },
+         width,
+         height
+      ));
+   };
+
+   const onCropComplete = (crop: PixelCrop) => {
+      setCompletedCrop(crop);
+   };
+
+   const onCropSave = async () => {
+      if (!completedCrop || !imgRef.current || !imgSrc) {
+         setError("Ошибка: не выбрана область обрезки или изображение не загружено.");
+         return;
+      }
+
+      const image = imgRef.current;
+      const canvas = document.createElement('canvas');
+      const scaleX = image.naturalWidth / image.width;
+      const scaleY = image.naturalHeight / image.height;
+
+      // Устанавливаем размеры canvas равными размерам обрезанной области
+      canvas.width = completedCrop.width;
+      canvas.height = completedCrop.height;
+      const ctx = canvas.getContext('2d');
+
+      if (!ctx) {
+         setError("Не удалось получить контекст canvas.");
+         return;
+      }
+
+      ctx.drawImage(
+         image,
+         completedCrop.x * scaleX,
+         completedCrop.y * scaleY,
+         completedCrop.width * scaleX,
+         completedCrop.height * scaleY,
+         0,
+         0,
+         completedCrop.width,
+         completedCrop.height
+      );
+
+      // Получаем обрезанное изображение в виде Blob
+      canvas.toBlob((blob) => {
+         if (blob) {
+            // Создаем новый File объект из Blob
+            const croppedFile = new File([blob], "cropped_avatar.png", { type: "image/png" });
+            setAccountPhoto(croppedFile); // Устанавливаем обрезанный файл
+            setPhotoPreview(URL.createObjectURL(croppedFile)); // Обновляем предпросмотр
+            setShowCropper(false); // Скрываем компонент обрезки
+            setImgSrc(null); // Очищаем исходное изображение для обрезки
+            setSuccess("Изображение успешно обрезано.");
+            if (fileInputRef.current) {
+               fileInputRef.current.value = ""; // Сбрасываем input файл
+            }
+         } else {
+            setError("Не удалось создать обрезанное изображение.");
+         }
+      }, 'image/png'); // Сохраняем как PNG
    };
 
    // Функция для программного вызова диалога выбора файла
@@ -137,7 +247,7 @@ const AdminAccountsEditItem = ({
       if (accountDetail) {
          try {
             if (!accountPhoto) {
-               setError('Выберите фотку аккаунта');
+               setError('Выберите фото аккаунта');
                return;
             }
 
@@ -164,7 +274,8 @@ const AdminAccountsEditItem = ({
                updateAccount(updatedAccountData);
 
                setSuccess('Фото успешно обновлено');
-               setAccountPhoto(null);
+               setAccountPhoto(null); // Очищаем после сохранения
+               setPhotoPreview(null); // Очищаем предпросмотр
                if (fileInputRef.current) {
                   fileInputRef.current.value = "";
                }
@@ -331,18 +442,18 @@ const AdminAccountsEditItem = ({
    const handleMediaFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const selectedFiles = event.target.files;
       if (!selectedFiles || !selectedFiles.length) {
-         setError("Можно загружать только JPG или MP4 файлы.");
+         setError("Можно загружать только JPG, PNG, GIF, WEBP, MP4, MOV файлы.");
          return;
       }
 
-      const allowedTypes = ["image/jpeg", "image/jpg", "video/mp4"];
+      const allowedTypes = ["image/jpeg", "image/jpg", "video/mp4", "image/png", "image/MOV", "image/gif", "image/webp"];
       const newFileUrls: File[] = [];
 
       for (const file of selectedFiles) {
          if (allowedTypes.includes(file.type)) {
             newFileUrls.push(file);
          } else {
-            setError("Можно загружать только JPG или MP4 файлы.");
+            setError("Можно загружать только JPG, PNG, GIF, WEBP, MP4, MOV файлы.");
             return;
          }
       }
@@ -421,7 +532,7 @@ const AdminAccountsEditItem = ({
                </div>
             </div>
             <p className="admin-accounts-edit__name">Название: <svg onClick={() => { navigate(`/${localAccount.id}`) }} width="20" height="20" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-               <path d="M45.3629 45.3629C47.2751 43.4507 48.792 41.1805 49.8269 38.6821C50.8618 36.1836 51.3945 33.5058 51.3945 30.8015C51.3945 28.0971 50.8618 25.4193 49.8269 22.9209C48.792 20.4224 47.2751 18.1522 45.3629 16.24C43.4507 14.3278 41.1805 12.8109 38.6821 11.776C36.1836 10.7411 33.5058 10.2084 30.8014 10.2084C28.0971 10.2084 25.4193 10.7411 22.9208 11.776C20.4224 12.8109 18.1522 14.3278 16.24 16.24C12.378 20.1019 10.2084 25.3398 10.2084 30.8015C10.2084 36.2631 12.378 41.501 16.24 45.3629C20.1019 49.2249 25.3398 51.3945 30.8014 51.3945C36.2631 51.3945 41.501 49.2249 45.3629 45.3629ZM45.3629 45.3629L58.3333 58.3333" stroke="#79C0AD" strokeWidth="4.375" strokeLinecap="round" strokeLinejoin="round" />
+               <path d="M45.3629 45.3629C47.2751 43.4507 48.792 41.1805 49.8269 38.6821C50.8618 36.1836 51.3945 33.5058 51.3945 30.8015C51.3945 28.0971 50.8618 25.4193 22.9208 11.776C20.4224 12.8109 18.1522 14.3278 16.24 16.24C12.378 20.1019 10.2084 25.3398 10.2084 30.8015C10.2084 36.2631 12.378 41.501 16.24 45.3629C20.1019 49.2249 25.3398 51.3945 30.8014 51.3945C36.2631 51.3945 41.501 49.2249 45.3629 45.3629ZM45.3629 45.3629L58.3333 58.3333" stroke="#79C0AD" strokeWidth="4.375" strokeLinecap="round" strokeLinejoin="round" />
             </svg><br /><span>{localAccount.name}</span></p>
             <p className="admin-accounts-edit__date">Дата создания: <br />
                <span>
@@ -449,8 +560,8 @@ const AdminAccountsEditItem = ({
                            isImage = item.type.startsWith("image/");
                            src = URL.createObjectURL(item);
                         } else if (typeof item === "string") {
-                           isImage = item.includes(".jpg") || item.includes(".jpeg") || item.includes(".png");
-                           src = item.startsWith("blob") ? item : `${item}`;
+                           isImage = item.includes(".jpg") || item.includes(".jpeg") || item.includes(".png") || item.includes(".gif") || item.includes(".webp");
+                           src = item.startsWith("blob") ? item : `${item}`; // Предполагаем, что transformPhoto не нужен для media файлов, если они уже полные URL
                         }
 
                         return (
@@ -458,8 +569,7 @@ const AdminAccountsEditItem = ({
                               {isImage ? (
                                  <img src={src} alt="Image" />
                               ) : (
-                                 <video src={src} autoPlay muted />
-                              )}
+                                 <video src={src} autoPlay muted controls />)}
                               <div onClick={() => deleteHandler(index)} className="admin-accounts-get__imageBg">
                                  <svg width="30" height="30" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M55.4166 11.6667H45.2083L42.2916 8.75H27.7083L24.7916 11.6667H14.5833V17.5H55.4166M17.5 55.4167C17.5 56.9638 18.1146 58.4475 19.2085 59.5415C20.3025 60.6354 21.7862 61.25 23.3333 61.25H46.6666C48.2137 61.25 49.6975 60.6354 50.7914 59.5415C51.8854 58.4475 52.5 56.9638 52.5 55.4167V20.4167H17.5V55.4167Z" fill="#E36F6F" />
@@ -469,7 +579,7 @@ const AdminAccountsEditItem = ({
                         );
                      })}
                      <div className="admin-accounts-get__files">
-                        <input type="file" accept=".jpg, .mp4" multiple onChange={handleMediaFileChange} />
+                        <input type="file" accept=".jpg, .mp4, .MOV, .png, .gif, .webp" multiple onChange={handleMediaFileChange} />
                         <button className="btn btn-info" onClick={saveHandler}>Сохранить</button>
                      </div>
                   </div>
@@ -508,29 +618,73 @@ const AdminAccountsEditItem = ({
                      <button className="admin-accounts-get__reset" onClick={() => { updateDate('reset') }}>Сбросить дату</button>
                   </div>
 
-                  <div className="admin-accounts-get__photo" onClick={triggerFileInput} style={{ cursor: 'pointer' }}>
-                     {photoPreview ?
-                        <img src={photoPreview} alt="Предпросмотр аватара" /> :
-                        accountDetail.account.photo ?
-                           <img src={transformPhoto(accountDetail.account.photo)} alt="Аватар аккаунта" /> :
-                           <img src="/images/blog_image.jpg" alt="Заглушка" />
-                     }
-                  </div>
-                  <div className="admin-accounts-get__files">
-                     <input
-                        type="file"
-                        accept=".jpg,.jpeg"
-                        onChange={handleFileChange}
-                        ref={fileInputRef}
-                        style={{ display: 'block', marginBottom: '10px' }}
-                     />
-                     <button
-                        className="btn btn-info"
-                        onClick={saveHandlerPhoto}
-                        disabled={!accountPhoto}
-                     >
-                        Сохранить
-                     </button>
+                  {/* Блок для загрузки и обрезки обложки аккаунта */}
+                  <div className="admin-accounts-get__photo-upload">
+                     <h4>Обложка аккаунта</h4>
+                     {showCropper && imgSrc ? (
+                        <div className="cropper-container" style={{ maxWidth: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                           <ReactCrop
+                              crop={crop}
+                              onChange={(_, percentCrop) => setCrop(percentCrop)}
+                              onComplete={(c) => onCropComplete(c)}
+                              aspect={1 / 1} // Соотношение сторон 1:1 для квадратной обрезки
+                              circularCrop={false} // Прямоугольная обрезка
+                           >
+                              <img ref={imgRef} src={imgSrc} onLoad={onImageLoad} alt="Изображение для обрезки" style={{ maxWidth: '100%', height: 'auto', display: 'block' }} />
+                           </ReactCrop>
+                           <button
+                              className="btn btn-info"
+                              onClick={onCropSave}
+                              disabled={!completedCrop?.width || !completedCrop?.height}
+                              style={{ marginTop: '10px' }}
+                           >
+                              Обрезать и сохранить
+                           </button>
+                           <button
+                              className="btn"
+                              onClick={() => {
+                                 setShowCropper(false);
+                                 setImgSrc(null);
+                                 setAccountPhoto(null);
+                                 setPhotoPreview(null);
+                                 if (fileInputRef.current) {
+                                    fileInputRef.current.value = "";
+                                 }
+                              }}
+                              style={{ marginTop: '5px' }}
+                           >
+                              Отмена
+                           </button>
+                        </div>
+                     ) : (
+                        <div className="admin-accounts-get__photo" onClick={triggerFileInput} style={{ cursor: 'pointer' }}>
+                           {photoPreview ?
+                              <img src={photoPreview} alt="Предпросмотр аватара" /> :
+                              accountDetail.account.photo ?
+                                 <img src={transformPhoto(accountDetail.account.photo)} alt="Аватар аккаунта" /> :
+                                 <img src="/images/blog_image.jpg" alt="Заглушка" />
+                           }
+                        </div>
+                     )}
+
+                     {!showCropper && ( // Показываем input и кнопку сохранения, только если не показывается кроппер
+                        <div className="admin-accounts-get__files">
+                           <input
+                              type="file"
+                              accept="image/jpeg, image/png, image/gif, image/webp" // Только изображения для обложки
+                              onChange={handlePhotoFileChange}
+                              ref={fileInputRef}
+                              style={{ display: 'block', marginBottom: '10px' }}
+                           />
+                           <button
+                              className="btn btn-info"
+                              onClick={saveHandlerPhoto}
+                              disabled={!accountPhoto}
+                           >
+                              Сохранить обложку
+                           </button>
+                        </div>
+                     )}
                   </div>
                </div>
             </div>

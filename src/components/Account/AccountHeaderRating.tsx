@@ -5,7 +5,7 @@ import IUser from "../../types/IUser";
 import { useEffect, useState } from "react";
 
 const AccountHeaderRating = ({ rating, setSeccess, setError }: IRatingProps) => {
-   const apiUrl: string = 'https://check-you.blog/api/set-rate'
+   const apiUrl: string = 'http://localhost:5000/set-rate'
    const { accountId } = useParams<{ accountId: string }>();
    const storedUser = localStorage.getItem('user');
    const user: IUser | null = storedUser ? JSON.parse(storedUser) : null;

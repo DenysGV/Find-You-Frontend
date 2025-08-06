@@ -75,7 +75,7 @@ export interface ISection {
    id: number,
    layout: number,
    text: string,
-   files: File[],
+   mediaItems: (string | File)[];
 }
 
 export interface IAdminSection {
