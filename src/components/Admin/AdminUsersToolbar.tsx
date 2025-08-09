@@ -8,7 +8,7 @@ import ErrorModal from "../UX/modals/ErrorModal"
 
 
 const AdminUsersToolbar = ({ setResult, setSelected, userId }: IAdminUserToolbar) => {
-   const apiUrlAddRole = `https://check-you.blog/api/add-role`
+   const apiUrlAddRole = `http://localhost:5000/add-role`
    const [role, setRole] = useState<string>('user')
 
    // Заменяем текстовые сообщения на модальные окна
@@ -28,7 +28,7 @@ const AdminUsersToolbar = ({ setResult, setSelected, userId }: IAdminUserToolbar
          // Получаем информацию о выбранном пользователе через API
          const fetchUserInfo = async () => {
             try {
-               const response = await axios.get(`https://check-you.blog/api/get-role?user_id=${userId}`);
+               const response = await axios.get(`http://localhost:5000/get-role?user_id=${userId}`);
                const selectedUser = response.data;
 
                // Если текущий пользователь - модератор и выбранный пользователь модератор или админ
@@ -54,7 +54,7 @@ const AdminUsersToolbar = ({ setResult, setSelected, userId }: IAdminUserToolbar
    const editRole = async () => {
       try {
          // Получаем актуальную информацию о пользователе перед изменением роли
-         const userResponse = await axios.get(`https://check-you.blog/api/get-role?user_id=${userId}`);
+         const userResponse = await axios.get(`http://localhost:5000/get-role?user_id=${userId}`);
          const selectedUser = userResponse.data;
 
          // Дополнительная проверка прав перед отправкой запроса

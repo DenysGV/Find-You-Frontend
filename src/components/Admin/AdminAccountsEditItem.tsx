@@ -446,7 +446,15 @@ const AdminAccountsEditItem = ({
          return;
       }
 
-      const allowedTypes = ["image/jpeg", "image/jpg", "video/mp4", "image/png", "image/MOV", "image/gif", "image/webp"];
+      const allowedTypes = [
+         "image/jpeg",
+         "image/jpg",
+         "video/mp4",
+         "image/png",
+         "image/gif",
+         "image/webp",
+         "video/quicktime"
+      ];
       const newFileUrls: File[] = [];
 
       for (const file of selectedFiles) {
@@ -579,7 +587,12 @@ const AdminAccountsEditItem = ({
                         );
                      })}
                      <div className="admin-accounts-get__files">
-                        <input type="file" accept=".jpg, .mp4, .MOV, .png, .gif, .webp" multiple onChange={handleMediaFileChange} />
+                        <input
+                           type="file"
+                           accept=".jpg, .jpeg, .mp4, .png, .gif, .webp, .mov, video/quicktime" // Исправлено 
+                           multiple
+                           onChange={handleMediaFileChange}
+                        />
                         <button className="btn btn-info" onClick={saveHandler}>Сохранить</button>
                      </div>
                   </div>

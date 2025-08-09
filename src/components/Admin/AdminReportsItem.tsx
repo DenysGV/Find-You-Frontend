@@ -7,8 +7,8 @@ import SuccessModal from "../UX/modals/SuccessModal"
 import ErrorModal from "../UX/modals/ErrorModal"
 
 const AdminReportsItem = ({ reporter_user_login, reported_user_login, account_name, account_id, created_at, report_text, comment_id, id, setResult, comment_text }: IAdminReportsItemState) => {
-   const apiUrlDelete = 'https://check-you.blog/api/delete-reports'
-   const apiUrlDeleteComment = 'https://check-you.blog/api/delete-comment'
+   const apiUrlDelete = 'http://localhost:5000/delete-reports'
+   const apiUrlDeleteComment = 'http://localhost:5000/delete-comment'
    const navigate = useNavigate()
 
    // Состояния для модальных окон вместо простых текстовых сообщений

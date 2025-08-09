@@ -22,8 +22,8 @@ const CommentsContentItem = ({
    const [error, setError] = useState<string>('');
    const [success, setSuccess] = useState<string>('');
    const [comment, setComment] = useState<string>(text);
-   const apiUrlUpdate: string = `https://check-you.blog/api/update-comment`
-   const apiUrlRemove: string = `https://check-you.blog/api/delete-comment`
+   const apiUrlUpdate: string = `http://localhost:5000/update-comment`
+   const apiUrlRemove: string = `http://localhost:5000/delete-comment`
 
    const editComment = async () => {
       try {

@@ -27,7 +27,7 @@ const AdminSectionsItem = ({ section, setSections }: IAdminSectionsItemProps) =>
    const layoutNames: string[] = ['Текст | Изображение', 'Изображение | Текст', 'Текст', 'Текст | 2 Изображения', '2 Изображения | Текст', 'Изображение | Изображение', 'Изображение | 2 Изображения', '2 Изображения | Изображение', '3 Изображения'];
 
    // Базовый URL для изображений, если они относительные
-   const basicUrl = 'https://check-you.blog/api';
+   const basicUrl = 'http://localhost:5000';
 
    // Реф для скрытого input[type="file"] для замены медиа-файлов
    const replaceFileInputRef = useRef<HTMLInputElement>(null);

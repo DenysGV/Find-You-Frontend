@@ -6,7 +6,7 @@ import AdminAccountsEdit from "../AdminAccountsEdit";
 import IUser from "../../../types/IUser";
 
 const AdminAccountsContent = () => {
-   const apiUrlUpload = 'https://check-you.blog/api/upload-file'
+   const apiUrlUpload = 'http://localhost:5000/upload-file'
    const [file, setFile] = useState<File | null>(null);
    const [loading, setLoading] = useState<boolean>(false);
    const [success, setSuccess] = useState<boolean>(false);
