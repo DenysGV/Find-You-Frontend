@@ -21,7 +21,7 @@ const LoginModal = ({ isOpen, setIsOpen, children }: IModal) => {
       setError(''); // Сбрасываем ошибку перед отправкой запроса
 
       try {
-         const response = await axios.post('http://localhost:5000/login', {
+         const response = await axios.post('http://62.169.27.192/api/login', {
             login,
             password
          });

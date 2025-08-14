@@ -10,7 +10,7 @@ const ChangeAvatarModal = ({ isOpen, setIsOpen, children }: IModal) => {
    const [user, setUser] = useState<IUser | null>(null);
    const [error, setError] = useState<string>('');
    const [success, setSuccess] = useState<boolean>(false);
-   const apiUrlUpdate = 'http://localhost:5000/change-user-avatar';
+   const apiUrlUpdate = 'http://62.169.27.192/api/change-user-avatar';
    const [accountPhoto, setAccountPhoto] = useState<File | null>(null);
    const [isLoading, setIsLoading] = useState<boolean>(false);
 

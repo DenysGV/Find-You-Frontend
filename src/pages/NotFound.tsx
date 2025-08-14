@@ -8,7 +8,7 @@ import Layout from "../components/UX/Layout";
 import distributeImagesByLayout from "../utils/sectionSetting";
 
 const NotFound = () => {
-   const apiUrl = `http://localhost:5000/sections?page_name=Cтранница 404`
+   const apiUrl = `http://62.169.27.192/api/sections?page_name=Cтранница 404`
    const [error, setError] = useState<boolean>(false)
 
    const [sections, setSections] = useState<IAdminSections | null>(null)

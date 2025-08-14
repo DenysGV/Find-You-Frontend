@@ -62,8 +62,8 @@ const AccountGallery = ({ files }: IAccountAll) => {
 
    // Фильтруем только изображения из уже отсортированного массива
    const imageFiles = useMemo(() => {
-      return sortedFilesNumerically.filter(item => /\.(jpg|jpeg|png|gif)$/i.test(item));
-   }, [sortedFilesNumerically]); // Зависимость от численно отсортированного массива
+      return sortedFilesNumerically.filter(item => /\.(jpg|jpeg|png|gif|webp)$/i.test(item));
+   }, [sortedFilesNumerically]);
 
    // Фильтруем только видео из уже отсортированного массива
    const videoFiles = useMemo(() => {

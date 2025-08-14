@@ -13,7 +13,7 @@ const AdminSiteSwitch = () => {
    const [successMessage, setSuccessMessage] = useState<string>("");
 
    // URL для API запросов
-   const apiUrl = "http://localhost:5000/site-status";
+   const apiUrl = "http://62.169.27.192/api/site-status";
 
    // Проверяем права пользователя
    const storedUser = localStorage.getItem("user");

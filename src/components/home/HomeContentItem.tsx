@@ -5,8 +5,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const HomeContentItem = ({ id, photo }: IHomeAccount) => {
-   const apiUrlGet = 'http://localhost:5000/account';
-   const apiUrlAddView = 'http://localhost:5000/add-view';
+   const apiUrlGet = 'http://62.169.27.192/api/account';
+   const apiUrlAddView = 'http://62.169.27.192/api/add-view';
    const [video, setVideo] = useState<string[]>([]);
 
    // Получаем данные текущего пользователя из localStorage для передачи user_id (если есть)

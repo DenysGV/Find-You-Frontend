@@ -5,7 +5,7 @@ import Layout from "../UX/Layout"
 import distributeImagesByLayout from "../../utils/sectionSetting"
 
 const ReferralContent = () => {
-   const apiUrl = `http://localhost:5000/sections?page_name=Реферальная система`
+   const apiUrl = `http://62.169.27.192/api/sections?page_name=Реферальная система`
    const [error, setError] = useState<boolean>(false)
 
    const [sections, setSections] = useState<IAdminSections | null>(null)
