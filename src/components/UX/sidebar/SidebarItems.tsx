@@ -5,7 +5,7 @@ import HomeContentItem from "../../home/HomeContentItem";
 import axios from "axios";
 
 const SidebarItems = () => {
-   let apiUrl = `http://62.169.27.192/api/top-accounts`;
+   let apiUrl = `http://localhost:5000/top-accounts`;
    const [result, setResult] = useState<IAccountsState>({
       items: null,
       loading: false,

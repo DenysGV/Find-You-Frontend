@@ -15,8 +15,8 @@ export interface AccountEditorProps { // Переименовал для ясн�
 }
 
 const AccountEditor = ({ replyComment, cancelAction, editComment, accountId, setResult }: AccountEditorProps) => {
-   const apiUrlAdd: string = 'http://62.169.27.192/api/add-comment';
-   const apiUrlUpdate: string = 'http://62.169.27.192/api/update-comment';
+   const apiUrlAdd: string = 'http://localhost:5000/add-comment';
+   const apiUrlUpdate: string = 'http://localhost:5000/update-comment';
    const [error, setError] = useState<string | null>(null); // Сообщение об ошибке может быть строкой
    const [success, setSuccess] = useState<boolean>(false);
    const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);

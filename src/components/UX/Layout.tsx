@@ -19,7 +19,7 @@ const Layout = ({ layoutId, text, urls }: ILayout) => {
    const [layoutParts, setLayoutParts] = useState<string[]>([]);
 
    // Базовый URL для изображений, если они относительные
-   const basicUrl = 'http://62.169.27.192/api';
+   const basicUrl = 'http://localhost:5000';
 
    // Обрабатываем URL-адреса изображений, чтобы они всегда были полными
    // Это гарантирует, что изображения загружаются правильно как на публичных страницах, так и в админ-панели.

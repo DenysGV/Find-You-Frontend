@@ -15,7 +15,7 @@ import LoginModal from "../UX/modals/LoginModal";
 
 const AccountContent = () => {
    const { accountId } = useParams<{ accountId: string }>();
-   const api = `http://62.169.27.192/api/account?id=${Number(accountId)}`;
+   const api = `http://localhost:5000/account?id=${Number(accountId)}`;
    const [result, setResult] = useState<IAccountState>({
       items: null,
       loading: false,

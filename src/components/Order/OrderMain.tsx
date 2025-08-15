@@ -17,7 +17,7 @@ const OrderMain = () => {
    const navigate = useNavigate()
    const [isOpenLogin, setIsOpenLogin] = useState<boolean>(false);
 
-   const apiUrl = `http://62.169.27.192/api/sections?page_name=Заказы`
+   const apiUrl = `http://localhost:5000/sections?page_name=Заказы`
    const [error, setError] = useState<boolean>(false)
 
    const [sections, setSections] = useState<IAdminSections | null>(null)

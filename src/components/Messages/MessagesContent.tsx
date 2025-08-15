@@ -49,8 +49,8 @@ const MessagesContent = () => {
          setIsSuccessModalOpen(false);
 
          const apiUrlDelete = deleteType === 'local'
-            ? `http://62.169.27.192/api/delete-messages`
-            : `http://62.169.27.192/api/delete-messages-global`;
+            ? `http://localhost:5000/delete-messages`
+            : `http://localhost:5000/delete-messages-global`;
 
          await axios.delete(apiUrlDelete, {
             data: {
@@ -88,7 +88,7 @@ const MessagesContent = () => {
 
       try {
          setResult(prev => ({ ...prev, loading: true, error: false }));
-         const apiUrl = `http://62.169.27.192/api/get-messages?user_id=${user.id}&page=${page}&filter=${filter}`;
+         const apiUrl = `http://localhost:5000/get-messages?user_id=${user.id}&page=${page}&filter=${filter}`;
 
          const response = await axios.get(apiUrl);
 
@@ -130,7 +130,7 @@ const MessagesContent = () => {
       if (!user?.id) return;
 
       try {
-         await axios.post('http://62.169.27.192/api/mark-as-read', {
+         await axios.post('http://localhost:5000/mark-as-read', {
             message_id: messageId,
             user_id: user.id
          });
@@ -159,7 +159,7 @@ const MessagesContent = () => {
    const fetchUnreadCount = async () => {
       if (!user?.id) return;
       try {
-         const response = await axios.get(`http://62.169.27.192/api/unread-count?user_id=${user.id}`);
+         const response = await axios.get(`http://localhost:5000/unread-count?user_id=${user.id}`);
          setUnreadCount(response.data.unread_count || 0);
       } catch (error) {
          console.error("Ошибка при получении количества непрочитанных:", error);

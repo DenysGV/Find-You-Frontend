@@ -17,7 +17,7 @@ import SuccessModal from "../../UX/modals/SuccessModal";
 const AdminOrdersContent = () => {
    const storedUser = localStorage.getItem('user');
    const user: IUser | null = storedUser ? JSON.parse(storedUser) : null;
-   let apiUrl: string = `http://62.169.27.192/api/get-admin-orders?user_id=${user?.id}`
+   let apiUrl: string = `http://localhost:5000/get-admin-orders?user_id=${user?.id}`
    const [result, setResult] = useState<IAdminOrderState>({
       items: null,
       loading: false,
@@ -87,7 +87,7 @@ const AdminOrdersContent = () => {
       setAllDatesLoading(true);
 
       try {
-         const response = await fetch(`http://62.169.27.192/api/get-all-order-dates?user_id=${user?.id}`);
+         const response = await fetch(`http://localhost:5000/get-all-order-dates?user_id=${user?.id}`);
 
          if (!response.ok) {
             throw new Error('Ошибка при получении дат заказов');

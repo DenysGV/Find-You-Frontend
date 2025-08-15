@@ -8,8 +8,8 @@ import SuccessModal from "../UX/modals/SuccessModal";
 import ErrorModal from "../UX/modals/ErrorModal";
 
 const AdminOrdersItem = ({ id, login, text, type, created_at, status, setResult, openSendMessageModal }: IAdminOrdersItemProps) => {
-   const apiUrl = 'http://62.169.27.192/api/update-orders'
-   const apiUrlDelete = 'http://62.169.27.192/api/delete-orders'
+   const apiUrl = 'http://localhost:5000/update-orders'
+   const apiUrlDelete = 'http://localhost:5000/delete-orders'
    const statusArr: string[] = [
       'Отклонена',
       'Новое',
